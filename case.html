@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="佛山市云戈家具有限公司，集设计、研发、生产、销售、服务于以提的综合性企业，产品涵盖现代休闲布艺沙发、软床、床垫、客餐厅。" />
+  <meta name="Keywords" content="云戈,家居,家具,沙发,软床,床垫,客餐厅" />
+  <title>云戈家具 - 产品系列</title>
+  <link rel="stylesheet" href="./css/normalize.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+  <header>
+    <div class="home-banner background" style="background-image: url('./imgs/case/case_01.jpg');">
+      <nav>
+        <div class="container nav-wrapper">
+          <a href="./index.html"><img class="logo" src="./imgs/logo-nav.png" title="云戈家具"></a>
+          <ul class="nav-list">
+            <li class="nav-item"><a href="./index.html" title="首页">首页</a></li>
+            <li class="nav-item nav-case active"><a href="./case.html" title="产品系列">产品系列</a></li>
+            <li class="nav-item"><a href="./brand.html" title="品牌中心">品牌中心</a></li>
+            <li class="nav-item"><a href="./join.html" title="招商加盟">招商加盟</a></li>
+            <li class="nav-item"><a href="./contact.html" title="联系我们">联系我们</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main class="case-main">
+    <div class="container">
+      <div class="brand-title">
+        <div class="zh">产品专区</div>
+        <div class="en">Product zone</div>
+      </div>
+    </div>
+    <div class="container" id="case-container" style="display: none;" v-show="tabList.length">
+      <div class="case-tabs">
+        <div class="case-tab" :class="{ active: item.active }" v-for="item of tabList" :key="item.type"><span @click="onTabClick(item)">{{ item.name }}</span></div>
+      </div>
+      <div class="case-list">
+        <a :href="`./detail.html?type=${activeType}&id=${encodeURIComponent(item.id)}`" target="_blank" class="case-item" v-for="item of caseList" :key="item.id">
+          <img class="img" :src="`./imgs/detail/${activeType}/${encodeURIComponent(item.id)}.png`">
+          <div class="case-id">{{ item.id }}</div>
+        </a>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="container footer-container">
+      <img class="footer-logo" src="./imgs/logo-footer.png" title="云戈家具">
+      <div class="footer-infos">
+        <div class="footer-info">
+          <p class="footer-intro">全国服务热线：186 6427 1689</p>
+          <p class="footer-intro">营销中心：广东省佛山市顺德区龙江镇325国道家具大道103号云戈家具</p>
+          <p class="footer-intro">工厂地址：佛山市顺德区龙江镇世埠社区龙丰路9号</p>
+        </div>
+        <ul class="footer-list">
+          <li class="footer-item">
+            <div class="footer-nav-title">产品系列</div>
+            <ul class="footer-nav-list">
+              <li class="footer-nav-item"><a href="./case.html?type=shafa" title="沙发系列">沙发系列</a></li>
+              <li class="footer-nav-item"><a href="./case.html?type=ruanchuang" title="软床系列">软床系列</a></li>
+              <li class="footer-nav-item"><a href="./case.html?type=chuangdian" title="床垫系列">床垫系列</a></li>
+              <li class="footer-nav-item"><a href="./case.html?type=kecanting" title="客餐厅系列">客餐厅系列</a></li>
+            </ul>
+          </li>
+          <li class="footer-item">
+            <div class="footer-nav-title">关于我们</div>
+            <ul class="footer-nav-list">
+              <li class="footer-nav-item">品牌简介</li>
+              <li class="footer-nav-item">品牌价值观</li>
+              <li class="footer-nav-item">品牌历程</li>
+            </ul>
+          </li>
+          <li class="footer-item">
+            <div class="footer-nav-title">联系我们</div>
+            <ul class="footer-nav-list">
+              <li class="footer-nav-item">招商加盟</li>
+              <li class="footer-nav-item">人才招聘</li>
+              <li class="footer-nav-item">商业合作</li>
+              <li class="footer-nav-item">海外合作</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright-container">
+      <div class="container">
+        <div class="copyright">Copyright 2022 佛山市云戈家具有限公司</div>
+        <!-- <div class="copyright">粤ICP备2022076010号-1</div> -->
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
+  <script src="./js/tools.js"></script>
+  <script src="./js/data.js"></script>
+  <script>
+    var query = getRouteQuery()
+    console.log(query)
+
+    new Vue({
+      el: '#case-container',
+      data: {
+        tabList: [
+          { type: 'shafa', name: '沙发', active: false },
+          { type: 'ruanchuang', name: '软床', active: false },
+          { type: 'chuangdian', name: '床垫', active: false },
+          { type: 'kecanting', name: '客餐厅', active: false },
+        ],
+      },
+      computed: {
+        activeIndex() {
+          return this.tabList.findIndex(i => i.active)
+        },
+        activeType() {
+          return this.tabList[this.activeIndex].type
+        },
+        caseList() {
+          return caseData[this.activeType]
+        }
+      },
+      created() {
+        var index = this.tabList.findIndex(i => i.type === query.type)
+        this.tabList[index >= 0 ? index : 0].active = true
+      },
+      methods: {
+        onTabClick(item) {
+          this.tabList.forEach(i => i.active = false)
+          item.active = true
+        }
+      }
+    })
+  </script>
+</body>
+</html>
